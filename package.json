@@ -1,0 +1,17 @@
+{
+  "name": "yelp-camp-application",
+  "version": "1.0.0",
+  "description": "Simple Application for camping",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mironov Artyom",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "request": "^2.88.0"
+  }
+}
