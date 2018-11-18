@@ -51,6 +51,10 @@ app.get("/campgrounds/new", function(req, res) {
     res.render("new.ejs");
 });
 
+app.get("/campgrounds/:id", function(req, res) {
+    res.render('show');
+});
+
 app.listen(3000, function() {
     console.log("App started on 3000 port.");
 });
