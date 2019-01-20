@@ -42,20 +42,20 @@ function seedDB() {
                         console.log(err);
                     } else {
                         console.log("added new campground.");
-                        console.log(newCamp);
-                        Comment.create({
-                            text: "Test message",
-                            author: "Test user NSFW"
-                        }, (err, newComment) => {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log("added new comment.");
-                                newCamp.comments.push(newComment);
-                                newCamp.save();
-                                console.log(newComment);
-1                            }
-                        })
+                        // console.log(newCamp);
+//                         Comment.create({
+//                             text: "Test message",
+//                             author: "Test user NSFW"
+//                         }, (err, newComment) => {
+//                             if (err) {
+//                                 console.log(err);
+//                             } else {
+//                                 console.log("added new comment.");
+//                                 newCamp.comments.push(newComment);
+//                                 newCamp.save();
+//                                 // console.log(newComment);
+// 1                            }
+//                         });
                     }
 
                 }) 
