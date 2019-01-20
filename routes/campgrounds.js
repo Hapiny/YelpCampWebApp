@@ -7,7 +7,7 @@ router.get("/campgrounds", function(req, res) {
         if (err) {
             console.log(err);
         } else {
-            res.render("campgrounds/index", {campgrounds: campgrounds, curUser: req.user});
+            res.render("campgrounds/index", {campgrounds: campgrounds, currentUser: req.user});
         }
     });
 });
@@ -48,11 +48,61 @@ router.get("/campgrounds/:id", function(req, res) {
     });
 });
 
+router.get("/campgrounds/:id/edit", checkCampOwnership, (req, res) => {
+    Campground.findById(req.params.id, (err, foundCamp) => {
+        res.render("campgrounds/edit", {camp: foundCamp});
+    });
+});
+
+router.put("/campgrounds/:id", checkCampOwnership, (req, res) => {
+    Campground.findByIdAndUpdate(req.params.id, req.body.upd, (err, camp) => {
+        if (err) {
+            res.redirect("/campgrounds");
+        } else {
+            res.redirect("/campgrounds/" + req.params.id); 
+        }
+    });
+});
+
+router.delete("/campgrounds/:id", checkCampOwnership, (req, res) => {
+    Campground.findByIdAndRemove(req.params.id, (err) => {
+        if (err) {
+            console.log(err);
+            res.redirect("/campgrounds");
+        } else {
+            res.redirect("/campgrounds");
+        }
+    });
+});
+
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     } 
     res.redirect("/login");
+}
+
+function checkCampOwnership(req, res, next) {
+    if (req.isAuthenticated()) {
+        Campground.findById(req.params.id, (err, foundCamp) => {
+            if (err) {
+                console.log(err);
+                res.redirect("back");
+            } else {
+                var campUserId = foundCamp.author.id;
+                if (campUserId) {
+                    if (campUserId.equals(req.user._id)) {
+                        next();
+                    }
+                } else {
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        // res.render("error", {errMsg: "You need to be logged in to EDIT camp."});
+        res.redirect("back");
+    }
 }
 
 module.exports = router;

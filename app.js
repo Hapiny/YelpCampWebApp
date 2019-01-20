@@ -8,7 +8,8 @@ var express    = require("express"),
     seedDB     = require("./seeds"),
     passport   = require("passport"),
     LocalStrat = require("passport-local"),
-    MongoStrat = require("passport-local-mongoose");
+    MongoStrat = require("passport-local-mongoose"),
+    methodOverride = require("method-override");
 
 var campgroundRoutes = require("./routes/campgrounds"),
     commentRoutes    = require("./routes/comments"),
@@ -18,14 +19,11 @@ var campgroundRoutes = require("./routes/campgrounds"),
 mongoose.connect("mongodb://localhost/yelp_camp");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"))
-app.use((req, res, next) => {
-    res.locals.curUser = req.user;
-    next();
-});
+app.use(express.static(__dirname + "/public"));
+app.use(methodOverride("_method"));
 
 // Clean DB and fill it with stored data.
-seedDB();
+// seedDB();
 
 // Passport configuration
 app.use(require("express-session")({
@@ -38,6 +36,11 @@ app.use(passport.session());
 passport.use(new LocalStrat(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
 
 app.use(authRoutes);
 app.use(commentRoutes);
