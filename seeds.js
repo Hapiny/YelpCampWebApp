@@ -32,16 +32,16 @@ data = [
 
 function seedDB() {
     Campground.remove({}, function(err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("all campgrounds was removed.");
-            data.forEach(camp => {
-                Campground.create(camp, function(err, newCamp) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log("added new campground.");
+        // if (err) {
+        //     console.log(err);
+        // } else {
+        //     console.log("all campgrounds was removed.");
+        //     data.forEach(camp => {
+        //         Campground.create(camp, function(err, newCamp) {
+        //             if (err) {
+        //                 console.log(err);
+        //             } else {
+        //                 console.log("added new campground.");
                         // console.log(newCamp);
 //                         Comment.create({
 //                             text: "Test message",
@@ -56,11 +56,11 @@ function seedDB() {
 //                                 // console.log(newComment);
 // 1                            }
 //                         });
-                    }
+    //                 }
 
-                }) 
-            });
-        }
+    //             }) 
+    //         });
+    //     }
     });
 }
 

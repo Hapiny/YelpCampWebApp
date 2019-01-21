@@ -9,7 +9,8 @@ var express    = require("express"),
     passport   = require("passport"),
     LocalStrat = require("passport-local"),
     MongoStrat = require("passport-local-mongoose"),
-    methodOverride = require("method-override");
+    methodOverride = require("method-override"),
+    flash          = require("connect-flash");
 
 var campgroundRoutes = require("./routes/campgrounds"),
     commentRoutes    = require("./routes/comments"),
@@ -21,9 +22,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
+app.use(flash());
 
 // Clean DB and fill it with stored data.
-// seedDB();
+seedDB();
 
 // Passport configuration
 app.use(require("express-session")({
@@ -39,6 +41,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
+    res.locals.errMsg = req.flash("error");
+    res.locals.successMsg = req.flash("success");
     next();
 });
 
